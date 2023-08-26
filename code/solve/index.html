@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://oboolakee.github.io/mkDocsTest/code/solve/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>solve - LBM for solids</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "solve";
+        var mkdocs_page_input_path = "code\\solve.md";
+        var mkdocs_page_url = "/mkDocsTest/code/solve/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> LBM for solids
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../publications/">Publications</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Code</span></p>
+              <ul class="current">
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">solve</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gridGeneration/">gridGeneration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../implicitGeometryRepresentation/">implicitGeometryRepresentation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../analyticalSolutionFields/">analyticalSolutionFields</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../precomputeDirichlet/">precomputeDirichlet</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../precomputeNeumann/">precomputeNeumann</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">LBM for solids</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+          <li>Code &raquo;</li>
+      <li class="breadcrumb-item active">solve</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h4 id="solverefinementfactor">solve(refinementFactor):</h4>
+<p>Main function calling all pre-processing functions, performing the main iteration loop and post-processing. The input section specifies all <em>discretization parameters</em> and the <em>problem definiton</em>:</p>
+<ul>
+<li>
+<p><code>nxBase</code> - number of lattice nodes placed along x-direction of bounding box (see below)</p>
+</li>
+<li>
+<p><code>timeStepsBase</code> - number of time steps placed in pseudo time segment</p>
+</li>
+<li>
+<p><code>E</code> - Young's modulus</p>
+</li>
+<li>
+<p><code>nu</code> - Poisson's ratio</p>
+</li>
+<li>
+<p><code>levelSetFunction</code> - symbolic expression for geometry definition (using symbolic variables <code>x</code> and <code>y</code></p>
+</li>
+<li>
+<p><code>neumannGeometryFunction</code> - symbolic function to define Dirichlet <code>&lt;=0</code> and Neumann <code>&gt;0</code> portion of boundary</p>
+</li>
+<li>
+<p><code>boundingBox</code> - rectangular simulation domain to be filled with the lattice [<em>x of left side, x of right side, y of bottom side, y of top side</em>]</p>
+</li>
+<li>
+<p><code>uAnalyticalSim</code> - symbolic expression of target manufactured solution to be used to generate all data for the body load, boundary conditions and error analysis</p>
+</li>
+</ul>
+<p><em>Input Arguments</em></p>
+<ul>
+<li>
+<p><code>refinementFactor</code> - factor for grid and time step refinement according to diffusive scaling</p>
+<ul>
+<li>choose value <code>&lt;1</code> for refinement</li>
+<li>comment out value assignemt in input section if input argument should be applied</li>
+</ul>
+</li>
+</ul>
+<p><em>Output Arguments</em></p>
+<ul>
+<li>
+<p><code>dx</code> - grid spacing as characteristic smallness parameter of the simulation</p>
+</li>
+<li>
+<p><code>L2ErrorDisp</code>, <code>LinfErrorDisp</code>,<code>L2ErrorStress</code>, <code>LinfErrorStress</code> - L2/Linf error of the displacement/stress solution at the final time step</p>
+</li>
+<li>
+<p><code>ELattice</code> - Young's modulus in lattice units</p>
+</li>
+<li>
+<p><code>nu</code> - Poisson's ratio (dimensionless)</p>
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../../publications/" class="btn btn-neutral float-left" title="Publications"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../gridGeneration/" class="btn btn-neutral float-right" title="gridGeneration">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../../publications/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../gridGeneration/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

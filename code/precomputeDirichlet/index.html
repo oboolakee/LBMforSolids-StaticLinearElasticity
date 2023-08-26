@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><link rel="canonical" href="https://oboolakee.github.io/mkDocsTest/code/precomputeDirichlet/" />
+      <link rel="shortcut icon" href="../../img/favicon.ico" />
+    <title>precomputeDirichlet - LBM for solids</title>
+    <link rel="stylesheet" href="../../css/theme.css" />
+    <link rel="stylesheet" href="../../css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "precomputeDirichlet";
+        var mkdocs_page_input_path = "code\\precomputeDirichlet.md";
+        var mkdocs_page_url = "/mkDocsTest/code/precomputeDirichlet/";
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="../../js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="../.." class="icon icon-home"> LBM for solids
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../..">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="../../publications/">Publications</a>
+                </li>
+              </ul>
+              <p class="caption"><span class="caption-text">Code</span></p>
+              <ul class="current">
+                  <li class="toctree-l1"><a class="reference internal" href="../solve/">solve</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../gridGeneration/">gridGeneration</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../implicitGeometryRepresentation/">implicitGeometryRepresentation</a>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../analyticalSolutionFields/">analyticalSolutionFields</a>
+                  </li>
+                  <li class="toctree-l1 current"><a class="reference internal current" href="./">precomputeDirichlet</a>
+    <ul class="current">
+    </ul>
+                  </li>
+                  <li class="toctree-l1"><a class="reference internal" href="../precomputeNeumann/">precomputeNeumann</a>
+                  </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../..">LBM for solids</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../.." class="icon icon-home" aria-label="Docs"></a> &raquo;</li>
+          <li>Code &raquo;</li>
+      <li class="breadcrumb-item active">precomputeDirichlet</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h4 id="precomputedirichletdirichletindicesuboundaryfunctionboundarypositions">precomputeDirichlet(dirichletIndices,uBoundaryFunction,boundaryPositions,</h4>
+<h4 id="walldistancesthetatauvector">wallDistances,theta,tauVector):</h4>
+<p>The pre-processing of the Dirichlet boundary condition involves computing the displacement solution at each boundary interception point of all possible links (see <a href="../implicitGeometryRepresentation/">here</a>). The boundary condition is set up by precomputing the right-hand side source term (<code>inhomogeneity</code> in code) and the <code>momentMatrix</code> to be applied to the available moments at each boundary node for higher-order corrections.</p>
+<p><em>Input Arguments</em></p>
+<ul>
+<li>
+<p><code>dirichletIndices</code> - [<em>nVelocities,nNodes</em>] - true if specific link of this node intercepts a Dirichlet boundary</p>
+</li>
+<li>
+<p><code>uBoundaryFunction</code> - function handle for x and y component of the displacement at the Dirichlet boundary</p>
+</li>
+<li>
+<p><code>boundaryPosition</code> - [<em>nVelocities,nNodes,2</em>] - x and y position of each boundary intersection point for each link and boundary node</p>
+</li>
+<li>
+<p><code>wallDistances</code> - [<em>nVelocities,nNodes</em>] - sub-grid wall distance <code>[0,1]</code> of each boundary node and link that intercepts the boundary (distance between node and boundary interception point along link, normalized by the link distance)</p>
+</li>
+<li>
+<p><code>theta</code> - dimensionless lattice speed (here always set to 1/3)</p>
+</li>
+<li>
+<p><code>tauVector</code> - vector of all dimensionless relaxation times</p>
+</li>
+</ul>
+<p><em>Output Arguments</em></p>
+<ul>
+<li>
+<p><code>distributionMatrix</code> - determines the linear combination of all post-collision populations at each boundary node to be used for the boundary formulation; for the Dirichlet formulation this is only the outgoing population</p>
+</li>
+<li>
+<p><code>momentMatrix</code> - determines the linear combination of moments available at each boundary node to perform higher-order corrections</p>
+</li>
+<li>
+<p><code>inhomogeneity</code> - source term of the boundary formulation to apply the (inhomogeneous) boundary condition</p>
+</li>
+</ul>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="../analyticalSolutionFields/" class="btn btn-neutral float-left" title="analyticalSolutionFields"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../precomputeNeumann/" class="btn btn-neutral float-right" title="precomputeNeumann">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="../analyticalSolutionFields/" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="../precomputeNeumann/" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="../../js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = "../..";</script>
+    <script src="../../js/theme_extra.js"></script>
+    <script src="../../js/theme.js"></script>
+      <script src="../../search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
