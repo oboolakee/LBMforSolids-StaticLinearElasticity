@@ -1,6 +1,13 @@
 site_name: LBM for solids
-site_url: https://example.com/
+site_url: https://oboolakee.github.io/mkDocsTest/
 nav:
  - Home: index.md
- - About: about.md
+ - Publications: publications.md
+ - Code:
+   - solve: code/solve.md
+   - gridGeneration: code/gridGeneration.md
+   - implicitGeometryRepresentation: code/implicitGeometryRepresentation.md
+   - analyticalSolutionFields: code/analyticalSolutionFields.md
+   - precomputeDirichlet: code/precomputeDirichlet.md
+   - precomputeNeumann: code/precomputeNeumann.md
 theme: readthedocs
