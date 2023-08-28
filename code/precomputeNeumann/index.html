@@ -88,9 +88,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h4 id="precomputeneumannneumannindicesstreamingmasktractionboundaryfunction">precomputeNeumann(neumannIndices,streamingMask,tractionBoundaryFunction,</h4>
-<h4 id="bodyloadfunctionnormalboundaryfunctionboundarypositionswalldistances">bodyLoadFunction,normalBoundaryFunction,boundaryPositions,wallDistances,</h4>
-<h4 id="thetatauvectordxdtoffsetvector">theta,tauVector,dx,dt,offsetVector):</h4>
+                <h4 id="precomputeneumann">precomputeNeumann</h4>
+<p><code>precomputeNeumann(neumannIndices, streamingMask, tractionBoundaryFunction, bodyLoadFunction, normalBoundaryFunction, boundaryPositions, wallDistances, theta, tauVector, dx, dt, offsetVector)</code></p>
 <p>The pre-processing of the Neumann boundary condition involves computing the traction at each boundary interception point of all possible links (see <a href="../implicitGeometryRepresentation/">here</a>). The boundary condition is set up by precomputing the right-hand side source term (<code>inhomogeneity</code> in code) and the <code>momentMatrix</code> to be applied to the available moments at each boundary node for higher-order corrections. Additionally, potential neighbor nodes inside the domain are determined to perform a finite difference approximation of required quantities that cannot be locally reconstructed. The neighbor node indices and a moment matrix for the linear combination of moments of the neighbor nodes is output as well.</p>
 <p><em>Input Arguments</em></p>
 <ul>

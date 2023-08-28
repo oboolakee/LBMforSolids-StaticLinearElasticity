@@ -88,7 +88,8 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
             <div class="section" itemprop="articleBody">
               
-                <h4 id="gridgenerationboundingboxlevelsetfunctionsymnx">gridGeneration(boundingBox,levelSetFunctionSym,nx):</h4>
+                <h4 id="gridgeneration">gridGeneration</h4>
+<p><code>gridGeneration(boundingBox, levelSetFunction, nx)</code></p>
 <p>Adjust the bounding box limits so that the geometry defined by the level set function is containend inside and output min/max coordinates of lattice nodes and number of nodes in each direction. The resulting lattice is the smallest rectangle that contains the geometry + one ghost node layer on each side. However, the user must ensure that the input geometry is fully contained inside the <code>boundingBox</code>!</p>
 <p><em>Input Arguments</em></p>
 <ul>
@@ -96,7 +97,7 @@
 <p><code>boundingBox</code> - rectangular simulation domain to be filled with the lattice [<em>x of left side, x of right side, y of bottom side, y of top side</em>]</p>
 </li>
 <li>
-<p><code>levelSetFunctionSym</code> - symbolic expression for geometry definition (using symbolic variables <code>x</code> and <code>y</code></p>
+<p><code>levelSetFunction</code> - symbolic expression for geometry definition (using symbolic variables <code>x</code> and <code>y</code></p>
 </li>
 <li>
 <p><code>nx</code> - number of lattice nodes along x-direction of bounding box (with potential refinement applied)</p>
